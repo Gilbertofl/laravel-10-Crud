@@ -6,6 +6,8 @@
     <div class="py-3 pb-5 ">
        <a href="{{ url('contenido/create')}}" class=" btn btn-dark ">agregar nota</a>
     </div>
+
+
     <div>
         <h2>Notas agregadas</h2>
         <div class="container py-1">   
