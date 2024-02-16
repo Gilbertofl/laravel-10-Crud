@@ -1,6 +1,7 @@
 <?php
-
+use App\Http\Controllers\ContenidoController;
 use Illuminate\Support\Facades\Route;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -20,4 +21,5 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::view('/contenido', "contenido")->middleware('auth')->name('contenido');
+
+Route::resource('/contenido', ContenidoController::class);
