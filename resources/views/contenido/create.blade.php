@@ -22,19 +22,19 @@
             <div class="mb-3 row">
                 <label for="name" class="col-sm-2 col-form-label ">Nombre</label>   
                 <div class="col-sm-7">
-                    <input type="text" class="form-control" name="name" id="name" value="{{ old('name')}}" placeholder="agrega el nombre de cualquier cosa" required>
+                    <input type="text" class="form-control" name="name" id="name" value="{{ old('name')}}" placeholder="Agrega un nombre" required>
                 </div>
             </div>
             <div class="mb-3 row">
                 <label for="note" class="col-sm-2 col-form-label ">Nota</label>   
                 <div class="col-sm-7">
-                    <textarea type="text" class="form-control" name="note" id="note" value="{{ old('note')}}" placeholder="agrega el nombre de cualquier cosa" cols="30" rows="10" required></textarea>
+                    <textarea type="text" class="form-control" name="note" id="note" placeholder="Escribe la nota" cols="30" rows="10" required>{{ trim(old('note'))}}</textarea>
                 </div>
             </div>
             <div class="mb-3 row">
                 <label for="year" class="col-sm-2 col-form-label ">Año de la nota</label>   
                 <div class="col-sm-7">
-                    <input type="text" class="form-control" name="year" id="year" value="{{ old('year')}}" placeholder="agrega el nombre de cualquier cosa" required>
+                    <input type="number" class="form-control" name="year" id="year" min="1900" max="2500" value="{{ old('year')}}" placeholder="Agrega el año" required>
                 </div>
             </div>
 

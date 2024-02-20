@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Contenido;
 use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class ContenidoController extends Controller
 {
@@ -13,7 +14,9 @@ class ContenidoController extends Controller
     public function index()
     {
         //
-        $contenidos = Contenido::all();
+        $perPage = request()->get('perPage') ?? 10;
+        $contenidos = Contenido::paginate($perPage);
+        $contenidos->appends(['perPage' => $perPage]);
         return view("contenido.contenido", ['contenidos' => $contenidos]);
     }
 
@@ -34,8 +37,8 @@ class ContenidoController extends Controller
         //
         $request->validate([
             'name'=> 'required',
-            'note'=> 'required|max:150',
-            'year'=> 'required|max:4',
+            'note'=> 'required|string|max:250',
+            'year'=> 'required|max:4|date_format:Y',
             
         ]);
 
@@ -45,25 +48,21 @@ class ContenidoController extends Controller
         $contenido->year = $request->input('year');
         $contenido->save();
 
-        return view('contenido.message', ['msg'=> 'Guardado exitosamente']);
+        return redirect('contenido')->with('message1', 'Guardado exitosamente');
     }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Contenido $contenido)
-    {
-        //
-    }
-
+    
     /**
      * Show the form for editing the specified resource.
      */
     public function edit($id)
     {
         //
-        $contenido = Contenido::find($id);
-        return view('contenido.edit', ['contenido'=> $contenido]);
+        try{
+            $contenido = Contenido::findOrFail($id);
+            return view('contenido.edit', ['contenido'=> $contenido]);
+        }catch(ModelNotFoundException $e){
+            abort(404);
+        }
     }
 
     /**
@@ -74,8 +73,8 @@ class ContenidoController extends Controller
         //
         $request->validate([
             'name'=> 'required',
-            'note'=> 'required|max:150',
-            'year'=> 'required|max:4',
+            'note'=> 'required|max:250',
+            'year'=> 'required|max:4|date_format:Y',
             
         ]);
 
@@ -85,7 +84,7 @@ class ContenidoController extends Controller
         $contenido->year = $request->input('year');
         $contenido->save();
 
-        return view('contenido.message', ['msg'=> 'Nota modificada']);
+        return redirect('contenido')->with('message2', 'Nota modificada');
     }
 
     /**
@@ -94,9 +93,15 @@ class ContenidoController extends Controller
     public function destroy($id)
     {
         //
-        $contenido = Contenido::find($id);
+       try {
+
+        $contenido = Contenido::findOrFail($id);
         $contenido->delete();
 
-        return redirect('contenido');
+        return redirect('contenido')->with('message3', 'Nota eliminada');
+
+       }catch(ModelNotFoundException $e) {
+        abort(404);
+       }
     }
 }
